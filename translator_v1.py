@@ -95,8 +95,6 @@ file = st.file_uploader(
 )
 
 if file is not None:
-
-    wb = import_excel(file_path=file)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
     lang = "English"
 
