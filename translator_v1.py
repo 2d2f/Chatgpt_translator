@@ -44,12 +44,11 @@ def make_dict(ws_list):
 
 
 def slice_dict(dict, max_length):
-    """
-    Slices a dictionary into several shorter dictionaries with the total length of the values less than max_length.
-    """
+
     result = []
     current_dict = {}
     current_length = 0
+    tot_cnt = 0
     for key, value in dict.items():
         key_length = len(str(key))
         value_length = len(str(value))
@@ -57,11 +56,12 @@ def slice_dict(dict, max_length):
             result.append(current_dict)
             current_dict = {}
             current_length = 0
+            tot_cnt += 1
         current_dict[key] = value
         current_length += key_length
         current_length += value_length
     result.append(current_dict)
-    return result
+    return result, tot_cnt
 
 
 def is_korean_sentence(sentence):
@@ -110,14 +110,14 @@ if file is not None:
     st.subheader("Excel data was loaded.")
 
     ###################### 1,500자 내로 자르기 ###################
-    sliced_dicts = slice_dict(trans_dict,2500) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
+    sliced_dicts, tot_cnt = slice_dict(trans_dict,2500) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
     st.subheader("Input dictionary was created.")
 
     answer_dicts = {}
     st.subheader("번역시작")
     for trytime, sliced_dict in enumerate(sliced_dicts):
         messages = []
-        st.subheader(f"input : {trytime}")
+        st.subheader(f"input : {trytime}/{tot_cnt}")
         st.subheader(len(str(sliced_dict)))
 #         st.subheader(str(sliced_dict))
         messages.append({"role": "system", "content": 'Dictionary is one of the type of variables in python that contains keys and values.'})
