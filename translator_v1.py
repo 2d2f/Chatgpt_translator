@@ -10,9 +10,9 @@ import re
 
 def import_excel(file_path):
 
-    if file_path[-4:] == "xlsm":
+    if ".xlsm" in file:
         wb = load_workbook(file_path,data_only=True,keep_vba=True)
-    elif file_path[-4:] == "xlsx":
+    elif ".xlsx" in file:
         wb = load_workbook(file_path,data_only=True)
     else :
         print("파일 형식 오류")
