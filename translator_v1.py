@@ -95,6 +95,7 @@ file = st.file_uploader(
 )
 
 if file is not None:
+    print(file)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
     lang = "English"
 
@@ -184,5 +185,5 @@ if file is not None:
     # output_path = file_path[:-5]+"_output."+file_path[-4:]
     output_file = f"{file.name.split('.')[0]}_output.xlsx"
     wb.save(output_file)
-
+    st.success(f"Modified data saved to {output_file}.")
     wb.close()
