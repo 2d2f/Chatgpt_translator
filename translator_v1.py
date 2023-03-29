@@ -107,19 +107,19 @@ if file is not None:
 
     #################### dictionary 생성 ###################
     trans_dict = make_dict(ws_list = ws_list)
-
+    st.subheader("Excel data was loaded.")
 
     ###################### 1,500자 내로 자르기 ###################
     sliced_dicts = slice_dict(trans_dict,2500) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
-
+    st.subheader("Input dictionary was created.")
 
     answer_dicts = {}
-
+    st.subheader("번역시작")
     for trytime, sliced_dict in enumerate(sliced_dicts):
         messages = []
-        print(f"input : {trytime}")
-        print(len(str(sliced_dict)))
-        print(str(sliced_dict))
+        st.subheader(f"input : {trytime}")
+        st.subheader(len(str(sliced_dict)))
+#         st.subheader(str(sliced_dict))
         messages.append({"role": "system", "content": 'Dictionary is one of the type of variables in python that contains keys and values.'})
         # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
         messages.append({"role": "system", "content": f'Please translate all the {lang} sentenses and words in the dictionary below into Korean. What you should translate are all the sentenses and words and output type is also dictionary which has same keys with input dictionary'})
@@ -134,7 +134,7 @@ if file is not None:
             )
             print("used token :"+str(completions.usage['total_tokens']))
             answer = completions.choices[0]['message']['content']
-            print(answer)
+#             print(answer)
             answer_dict = literal_eval(answer)
             # print(answer_dict)
             answer_dicts.update(answer_dict)
@@ -149,7 +149,7 @@ if file is not None:
             )
             print("used token :"+str(completions.usage['total_tokens']))
             answer = completions.choices[0]['message']['content']
-            print(answer)
+#             print(answer)
             answer_dict = literal_eval(answer)
             # print(answer_dict)
             answer_dicts.update(answer_dict)
@@ -164,7 +164,7 @@ if file is not None:
             )
             print("used token :"+str(completions.usage['total_tokens']))
             answer = completions.choices[0]['message']['content']
-            print(answer)
+#             print(answer)
             answer_dict = literal_eval(answer)
             # print(answer_dict)
             answer_dicts.update(answer_dict)
@@ -178,8 +178,8 @@ if file is not None:
         row_answer = int(key_answer_list[1])
         col_answer = int(key_answer_list[2])
         wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
-        print(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
-
+#         print(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
+    st.subheader("번역완료")
     #### output 생성 ####
 
     # output_path = file_path[:-5]+"_output."+file_path[-4:]
