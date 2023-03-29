@@ -1,6 +1,6 @@
 import openai
 import streamlit as st
-from openpyxl import load_workbook
+from openpyxl import Workbook, load_workbook
 from ast import literal_eval
 from konlpy.tag import Okt
 import sys
@@ -9,13 +9,13 @@ import time
 import re
 
 def import_excel(file_path):
-
+    wb = Workbook()
     if ".xlsm" in file:
         wb = load_workbook(file_path,data_only=True,keep_vba=True)
     elif ".xlsx" in file:
         wb = load_workbook(file_path,data_only=True)
     else :
-        print("파일 형식 오류")
+        st.subheader("파일형식오류")
         sys.exit()
 
     return wb
