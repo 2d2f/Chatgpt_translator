@@ -26,7 +26,7 @@ def make_dict(ws_list):
         ws = wb[wsname]
         max_row = ws.max_row
         max_col = ws.max_column
-        print(max_row, max_col)
+        st.subheader(max_row, max_col)
         for row in range(1,max_row+1):
             for col in range(1, max_col+1):
                 target = ws.cell(row, col).value
