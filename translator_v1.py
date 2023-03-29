@@ -98,7 +98,7 @@ if file is not None:
     st.subheader(file)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
     lang = "English"
-
+    st.subheader(lang)
     #################### 엑셀 불러온 후 모든 글자 긁어오기 #####################
     wb = import_excel(file_path=file)
 
