@@ -91,7 +91,7 @@ st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 
 file = st.file_uploader(
     "파일을 선택하세요(xlsx, xlsm만 가능)",
-    type=[['xlsx', 'xlsm']]
+    type=['xlsx', 'xlsm']
 )
 
 if file is not None:
