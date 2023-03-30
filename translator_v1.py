@@ -110,7 +110,7 @@ if file is not None and st.button("번역 시작"):
 
     #################### dictionary 생성 ###################
     trans_dict = make_dict(ws_list = ws_list)
-    st.write("Excel data was loaded.")
+    st.write("Excel data has been loaded.")
 
     ###################### 1,500자 내로 자르기 ###################
     sliced_dicts, tot_cnt = slice_dict(trans_dict,2500) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
