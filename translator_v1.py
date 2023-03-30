@@ -7,6 +7,7 @@ import sys
 import requests
 import time
 import re
+from io import BytesIO
 
 def import_excel(file_path):
     wb = Workbook()
@@ -26,7 +27,7 @@ def make_dict(ws_list):
         ws = wb[wsname]
         max_row = ws.max_row
         max_col = ws.max_column
-        st.subheader(max_row, max_col)
+        st.write(max_row, max_col)
         for row in range(1,max_row+1):
             for col in range(1, max_col+1):
                 target = ws.cell(row, col).value
@@ -89,7 +90,6 @@ st.header('File Translator')
 st.write('번역할 파일을 선택하세요.')
 st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 lang = st.radio("번역할 언어를 선택하세요", ["English", "Chinese", "Japanese"], horizontal=True)
-st.write(lang)
 
 file = st.file_uploader(
     "파일을 선택하세요(xlsx, xlsm만 가능)",
@@ -97,80 +97,82 @@ file = st.file_uploader(
 )
 
 if file is not None and st.button("번역 시작"):
-    st.subheader(file.name)
+    st.write(file.name)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
-    lang = "English"
-    st.subheader(lang)
+#     lang = "English"
+#     st.write(lang)
     #################### 엑셀 불러온 후 모든 글자 긁어오기 #####################
     wb = import_excel(file_path=file)
-    st.subheader("Excel was imported")
+    st.write("Excel was imported")
     ws_list = wb.sheetnames
 
 
     #################### dictionary 생성 ###################
     trans_dict = make_dict(ws_list = ws_list)
-    st.subheader("Excel data was loaded.")
+    st.write("Excel data was loaded.")
 
     ###################### 1,500자 내로 자르기 ###################
     sliced_dicts, tot_cnt = slice_dict(trans_dict,2500) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
-    st.subheader("Input dictionary was created.")
+    st.write("Input dictionary was created.")
 
     answer_dicts = {}
-    st.subheader("번역시작")
+    st.write("번역시작")
     for trytime, sliced_dict in enumerate(sliced_dicts):
         messages = []
-        st.subheader(f"input : {trytime}/{tot_cnt}")
-        st.subheader(len(str(sliced_dict)))
-#         st.subheader(str(sliced_dict))
+        st.write(f"input : {trytime}/{tot_cnt}")
+        st.write(len(str(sliced_dict)))
+#         st.write(str(sliced_dict))
         messages.append({"role": "system", "content": 'Dictionary is one of the type of variables in python that contains keys and values.'})
         # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
         messages.append({"role": "system", "content": f'Please translate all the {lang} sentenses and words in the dictionary below into Korean. What you should translate are all the sentenses and words and output type is also dictionary which has same keys with input dictionary'})
         messages.append({"role": "system", "content": str(sliced_dict)})
-        try:
-            print("try : 1")
-            completions = openai.ChatCompletion.create(
-                # model="gpt-4",
-                model="gpt-3.5-turbo",
-                messages=messages,
-                timeout=60
-            )
-            print("used token :"+str(completions.usage['total_tokens']))
-            answer = completions.choices[0]['message']['content']
-#             print(answer)
-            answer_dict = literal_eval(answer)
-            # print(answer_dict)
-            answer_dicts.update(answer_dict)
-        except requests.exceptions.Timeout:
-            time.sleep(5)
-            print("try : 2 - timeout")
-            completions = openai.ChatCompletion.create(
-                # model="gpt-4",
-                model="gpt-3.5-turbo",
-                messages=messages,
-                timeout=60
-            )
-            print("used token :"+str(completions.usage['total_tokens']))
-            answer = completions.choices[0]['message']['content']
-#             print(answer)
-            answer_dict = literal_eval(answer)
-            # print(answer_dict)
-            answer_dicts.update(answer_dict)
-        except SyntaxError:
-            time.sleep(5)
-            print("try : 2 - syntax")
-            completions = openai.ChatCompletion.create(
-                # model="gpt-4",
-                model="gpt-3.5-turbo",
-                messages=messages,
-                timeout=60
-            )
-            print("used token :"+str(completions.usage['total_tokens']))
-            answer = completions.choices[0]['message']['content']
-#             print(answer)
-            answer_dict = literal_eval(answer)
-            # print(answer_dict)
-            answer_dicts.update(answer_dict)
+        try:    
+            try:
+                print("try : 1")
+                completions = openai.ChatCompletion.create(
+                    # model="gpt-4",
+                    model="gpt-3.5-turbo",
+                    messages=messages,
+                    timeout=60
+                )
+                st.write("used token :"+str(completions.usage['total_tokens']))
+                answer = completions.choices[0]['message']['content']
+    #             print(answer)
+                answer_dict = literal_eval(answer)
+                # print(answer_dict)
+                answer_dicts.update(answer_dict)
+            except requests.exceptions.Timeout:
+                time.sleep(5)
+                print("try : 2 - timeout")
+                completions = openai.ChatCompletion.create(
+                    # model="gpt-4",
+                    model="gpt-3.5-turbo",
+                    messages=messages,
+                    timeout=60
+                )
+                st.write("used token :"+str(completions.usage['total_tokens']))
+                answer = completions.choices[0]['message']['content']
+    #             print(answer)
+                answer_dict = literal_eval(answer)
+                # print(answer_dict)
+                answer_dicts.update(answer_dict)
+            except SyntaxError:
+                time.sleep(5)
+                st.write("try : 2 - syntax")
+                completions = openai.ChatCompletion.create(
+                    # model="gpt-4",
+                    model="gpt-3.5-turbo",
+                    messages=messages,
+                    timeout=60
+                )
+                st.write("used token :"+str(completions.usage['total_tokens']))
+                answer = completions.choices[0]['message']['content']
+    #             print(answer)
+                answer_dict = literal_eval(answer)
+                # print(answer_dict)
+                answer_dicts.update(answer_dict)
         except :
+            st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
             continue
 
     for key_answer in answer_dicts:
@@ -181,13 +183,16 @@ if file is not None and st.button("번역 시작"):
         col_answer = int(key_answer_list[2])
         wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
 #         print(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
-    st.subheader("번역완료")
+    st.write("번역완료")
     #### output 생성 ####
     
     output = BytesIO()
     wb.save(output)
-    
-        
+    output_file = output.getvalue()
+    st.write("output_file")
+    b64 = base64.b64encode(excel_file)
+    download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download="modified_example.xlsx">Download Excel File</a>'
+    st.markdown(download_link, unsafe_allow_html=True)    
      
     # output_path = file_path[:-5]+"_output."+file_path[-4:]
 #     output_file = f"{file.name.split('.')[0]}_output.xlsx"
