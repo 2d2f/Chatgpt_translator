@@ -195,6 +195,8 @@ if file is not None and st.button("번역 시작"):
     download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download={output_file_name}>Download Excel File</a>'
     st.subheader("###################끝났어요!!!!!!!!!!!!!!#################")
     st.markdown(download_link, unsafe_allow_html=True)    
+    
+    time.sleep(100)
      
     # output_path = file_path[:-5]+"_output."+file_path[-4:]
 #     output_file_name = f"{file.name.split('.')[0]}_output.xlsx"
