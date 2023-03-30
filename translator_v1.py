@@ -88,13 +88,15 @@ st.title('Assurance DA')
 st.header('File Translator')
 st.write('번역할 파일을 선택하세요.')
 st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
+lang = st.radio("번역할 언어를 선택하세요", ["English", "Chinese", "Japanese"], horizontal=True)
+st.write(lang)
 
 file = st.file_uploader(
     "파일을 선택하세요(xlsx, xlsm만 가능)",
     type=['xlsx', 'xlsm']
 )
 
-if file is not None:
+if file is not None and st.button("번역 시작"):
     st.subheader(file.name)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
     lang = "English"
@@ -181,9 +183,14 @@ if file is not None:
 #         print(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
     st.subheader("번역완료")
     #### output 생성 ####
-
+    
+    output = BytesIO()
+    wb.save(output)
+    
+        
+     
     # output_path = file_path[:-5]+"_output."+file_path[-4:]
-    output_file = f"{file.name.split('.')[0]}_output.xlsx"
-    wb.save(output_file)
-    st.success(f"Modified data saved to {output_file}.")
-    wb.close()
+#     output_file = f"{file.name.split('.')[0]}_output.xlsx"
+#     wb.save(output_file)
+#     st.success(f"Modified data saved to {output_file}.")
+#     wb.close()
