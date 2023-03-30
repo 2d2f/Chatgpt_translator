@@ -123,7 +123,7 @@ if file is not None and st.button("번역 시작"):
         messages = []
         st.write(f"Input : {trytime+1}/{tot_cnt}")
         st.write(f"Input 길이 : {len(str(sliced_dict))}")
-#         st.write(str(sliced_dict))
+        st.write(str(sliced_dict))
         messages.append({"role": "system", "content": 'Dictionary is one of the type of variables in python that contains keys and values. The beginning and end of a dictionary are represented by \'{\' and \'}\', respectively, and the key and value are connected by a \':\' with each key-value pair separated by a comma.'})
         # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
         messages.append({"role": "system", "content": f'Please translate all the {org_lang} sentenses and words in the dictionary below into {tobe_lang}. What you should translate are all the sentenses and words and output type is also dictionary which has same keys with input dictionary'})
