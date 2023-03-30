@@ -169,7 +169,7 @@ if file is not None and st.button("번역 시작"):
                 )
                 st.write("used token :"+str(completions.usage['total_tokens']))
                 answer = completions.choices[0]['message']['content']
-    #             print(answer)
+                print(answer)
                 answer_dict = literal_eval(answer)
                 # print(answer_dict)
                 answer_dicts.update(answer_dict)
