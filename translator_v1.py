@@ -190,8 +190,8 @@ if file is not None and st.button("번역 시작"):
     output = BytesIO()
     wb.save(output)
     output_file = output.getvalue()
-    st.write("output_file")
-    b64 = base64.b64encode(excel_file)
+    st.write(output_file)
+    b64 = base64.b64encode(output_file)
     download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download="modified_example.xlsx">Download Excel File</a>'
     st.markdown(download_link, unsafe_allow_html=True)    
      
