@@ -50,7 +50,7 @@ def slice_dict(dict, max_length):
     result = []
     current_dict = {}
     current_length = 0
-    tot_cnt = 0
+    tot_cnt = 1
     for key, value in dict.items():
         key_length = len(str(key))
         value_length = len(str(value))
@@ -120,8 +120,8 @@ if file is not None and st.button("번역 시작"):
     st.write("번역시작")
     for trytime, sliced_dict in enumerate(sliced_dicts):
         messages = []
-        st.write(f"input : {trytime}/{tot_cnt}")
-        st.write(len(str(sliced_dict)))
+        st.write(f"input : {trytime+1}/{tot_cnt}")
+        st.write(f"input 길이 : {len(str(sliced_dict))}")
 #         st.write(str(sliced_dict))
         messages.append({"role": "system", "content": 'Dictionary is one of the type of variables in python that contains keys and values.'})
         # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
