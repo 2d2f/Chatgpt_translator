@@ -8,6 +8,7 @@ import requests
 import time
 import re
 from io import BytesIO
+import base64
 
 def import_excel(file_path):
     wb = Workbook()
@@ -27,7 +28,7 @@ def make_dict(ws_list):
         ws = wb[wsname]
         max_row = ws.max_row
         max_col = ws.max_column
-        st.write(max_row, max_col)
+        st.write("시트명 : "+wsname+", 최대 행 수 : "+max_row+", 최대 열 수 : "+max_col)
         for row in range(1,max_row+1):
             for col in range(1, max_col+1):
                 target = ws.cell(row, col).value
