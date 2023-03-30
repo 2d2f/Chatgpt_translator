@@ -88,7 +88,7 @@ st.set_page_config(layout="wide")
 
 st.title('Assurance DA')
 st.header('File Translator')
-st.write('번역할 파일을 선택하세요.')
+# st.write('번역할 파일을 선택하세요.')
 st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
 tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
