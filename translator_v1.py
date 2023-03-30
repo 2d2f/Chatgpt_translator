@@ -130,7 +130,7 @@ if file is not None and st.button("번역 시작"):
         messages.append({"role": "system", "content": str(sliced_dict)})
         try:    
             try:
-                print("try : 1")
+                st.write("try : 1")
                 completions = openai.ChatCompletion.create(
                     # model="gpt-4",
                     model="gpt-3.5-turbo",
@@ -175,7 +175,6 @@ if file is not None and st.button("번역 시작"):
                 answer_dicts.update(answer_dict)
         except :
             st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
-            continue
 
     for key_answer in answer_dicts:
         val_answer = answer_dicts[key_answer]
@@ -194,6 +193,7 @@ if file is not None and st.button("번역 시작"):
     output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_output.{file.name.split('.')[-1]}"
     b64 = base64.b64encode(output_file)
     download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download={output_file_name}>Download Excel File</a>'
+    st.subheader("###################끝났어요!!!!!!!!!!!!!!#################")
     st.markdown(download_link, unsafe_allow_html=True)    
      
     # output_path = file_path[:-5]+"_output."+file_path[-4:]
