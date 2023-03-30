@@ -104,7 +104,7 @@ if file is not None and st.button("번역 시작"):
 #     st.write(lang)
     #################### 엑셀 불러온 후 모든 글자 긁어오기 #####################
     wb = import_excel(file_path=file)
-    st.write("Excel was imported")
+    st.write("The Excel file has been uploaded.")
     ws_list = wb.sheetnames
 
 
@@ -114,14 +114,14 @@ if file is not None and st.button("번역 시작"):
 
     ###################### 1,500자 내로 자르기 ###################
     sliced_dicts, tot_cnt = slice_dict(trans_dict,2500) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
-    st.write("Input dictionary was created.")
+    st.write("Input dictionaries have been created.")
 
     answer_dicts = {}
     st.write("번역시작")
     for trytime, sliced_dict in enumerate(sliced_dicts):
         messages = []
-        st.write(f"input : {trytime+1}/{tot_cnt}")
-        st.write(f"input 길이 : {len(str(sliced_dict))}")
+        st.write(f"Input : {trytime+1}/{tot_cnt}")
+        st.write(f"Input 길이 : {len(str(sliced_dict))}")
 #         st.write(str(sliced_dict))
         messages.append({"role": "system", "content": 'Dictionary is one of the type of variables in python that contains keys and values.'})
         # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
@@ -190,13 +190,13 @@ if file is not None and st.button("번역 시작"):
     output = BytesIO()
     wb.save(output)
     output_file = output.getvalue()
-    st.write(output_file)
+    output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_output.{file.name.split('.')[-1]}"
     b64 = base64.b64encode(output_file)
-    download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download="modified_example.xlsx">Download Excel File</a>'
+    download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download={output_file_name}>Download Excel File</a>'
     st.markdown(download_link, unsafe_allow_html=True)    
      
     # output_path = file_path[:-5]+"_output."+file_path[-4:]
-#     output_file = f"{file.name.split('.')[0]}_output.xlsx"
+#     output_file_name = f"{file.name.split('.')[0]}_output.xlsx"
 #     wb.save(output_file)
 #     st.success(f"Modified data saved to {output_file}.")
 #     wb.close()
