@@ -105,7 +105,7 @@ if file is not None and st.button("번역 시작"):
 #     st.write(lang)
     #################### 엑셀 불러온 후 모든 글자 긁어오기 #####################
     wb = import_excel(file_path=file)
-    st.write("The Excel file has been uploaded.")
+#     st.write("The Excel file has been uploaded.")
     ws_list = wb.sheetnames
 
 
