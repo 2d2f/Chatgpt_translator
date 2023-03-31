@@ -191,7 +191,7 @@ if file is not None and st.button("번역 시작"):
     
     output = BytesIO()
     wb.save(output)
-    ws2 = wb[wsname]
+    ws2 = wb[wsname_answer]
     print(ws2.cell(1,2).value)
     output_file = output.getvalue()
     output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_output.{file.name.split('.')[-1]}"
