@@ -185,12 +185,14 @@ if file is not None and st.button("번역 시작"):
         row_answer = int(key_answer_list[1])
         col_answer = int(key_answer_list[2])
         wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
-#         print(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
+        st.write(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
     st.write("번역완료")
     #### output 생성 ####
     
     output = BytesIO()
     wb.save(output)
+    ws2 = wb[wsname]
+    print(ws2.cell(1,2).value)
     output_file = output.getvalue()
     output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_output.{file.name.split('.')[-1]}"
     b64 = base64.b64encode(output_file)
