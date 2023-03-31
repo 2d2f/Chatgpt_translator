@@ -143,6 +143,7 @@ if file is not None and st.button("번역 시작"):
                 answer_dict = literal_eval(answer)
                 st.write(answer_dict)
                 st.write("try : 1 - finish")
+                answer_dicts.update(answer_dict)
             except requests.exceptions.Timeout:
                 time.sleep(5)
                 print("try : 2 - timeout")
