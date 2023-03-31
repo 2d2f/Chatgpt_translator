@@ -142,7 +142,7 @@ if file is not None and st.button("번역 시작"):
     #             print(answer)
                 answer_dict = literal_eval(answer)
                 # print(answer_dict)
-                answer_dicts.update(answer_dict)
+                st.write("try : 1 - finish")
             except requests.exceptions.Timeout:
                 time.sleep(5)
                 print("try : 2 - timeout")
@@ -157,6 +157,7 @@ if file is not None and st.button("번역 시작"):
     #             print(answer)
                 answer_dict = literal_eval(answer)
                 # print(answer_dict)
+                print("try : 2 - Finish")
                 answer_dicts.update(answer_dict)
             except SyntaxError:
                 time.sleep(5)
@@ -172,6 +173,7 @@ if file is not None and st.button("번역 시작"):
                 print(answer)
                 answer_dict = literal_eval(answer)
                 # print(answer_dict)
+                st.write("try : 2 - Finish")
                 answer_dicts.update(answer_dict)
         except :
             st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
