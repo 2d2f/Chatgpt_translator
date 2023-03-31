@@ -193,7 +193,8 @@ if file is not None and st.button("번역 시작"):
     output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_output.{file.name.split('.')[-1]}"
     b64 = base64.b64encode(output_file)
     download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download={output_file_name}>Download Excel File</a>'
-    st.subheader("###################끝났어요!!!!!!!!!!!!!!#################")
+#     st.subheader("###################끝났어요!!!!!!!!!!!!!!#################")
+    st.write("파일 생성 완료")
     st.markdown(download_link, unsafe_allow_html=True)    
     
     time.sleep(100)
