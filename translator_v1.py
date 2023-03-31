@@ -141,7 +141,7 @@ if file is not None and st.button("번역 시작"):
                 answer = completions.choices[0]['message']['content']
     #             print(answer)
                 answer_dict = literal_eval(answer)
-                # print(answer_dict)
+                st.write(answer_dict)
                 st.write("try : 1 - finish")
             except requests.exceptions.Timeout:
                 time.sleep(5)
