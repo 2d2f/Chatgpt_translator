@@ -132,8 +132,8 @@ if file is not None and st.button("번역 시작"):
             try:
                 st.write("try : 1")
                 completions = openai.ChatCompletion.create(
-                    # model="gpt-4",
-                    model="gpt-3.5-turbo",
+                    model="gpt-4",
+#                     model="gpt-3.5-turbo",
                     messages=messages,
                     timeout=60
                 )
@@ -148,8 +148,8 @@ if file is not None and st.button("번역 시작"):
                 time.sleep(5)
                 print("try : 2 - timeout")
                 completions = openai.ChatCompletion.create(
-                    # model="gpt-4",
-                    model="gpt-3.5-turbo",
+                    model="gpt-4",
+#                     model="gpt-3.5-turbo",
                     messages=messages,
                     timeout=60
                 )
