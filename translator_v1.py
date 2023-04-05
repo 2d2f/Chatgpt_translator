@@ -132,8 +132,8 @@ if file is not None and st.button("번역 시작"):
             try:
                 st.write("try : 1")
                 completions = openai.ChatCompletion.create(
-                    model="gpt-4",
-#                     model="gpt-3.5-turbo",
+#                     model="gpt-4",
+                    model="gpt-3.5-turbo",
                     messages=messages,
                     timeout=60
                 )
@@ -148,8 +148,8 @@ if file is not None and st.button("번역 시작"):
                 time.sleep(5)
                 print("try : 2 - timeout")
                 completions = openai.ChatCompletion.create(
-                    model="gpt-4",
-#                     model="gpt-3.5-turbo",
+#                     model="gpt-4",
+                    model="gpt-3.5-turbo",
                     messages=messages,
                     timeout=60
                 )
@@ -192,8 +192,8 @@ if file is not None and st.button("번역 시작"):
     
     output = BytesIO()
     wb.save(output)
-    ws2 = wb[wsname_answer]
-    print(ws2.cell(1,2).value)
+#     ws2 = wb[wsname_answer]
+#     print(ws2.cell(1,2).value)
     output_file = output.getvalue()
     output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_output.{file.name.split('.')[-1]}"
     b64 = base64.b64encode(output_file)
