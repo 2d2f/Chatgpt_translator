@@ -139,14 +139,14 @@ if file is not None and st.button("번역 시작"):
                 )
                 st.write("used token :"+str(completions.usage['total_tokens']))
                 answer = completions.choices[0]['message']['content']
-    #             print(answer)
+                st.write(answer)
                 answer_dict = literal_eval(answer)
                 st.write(answer_dict)
                 st.write("try : 1 - finish")
                 answer_dicts.update(answer_dict)
             except requests.exceptions.Timeout:
                 time.sleep(5)
-                print("try : 2 - timeout")
+                st.write("try : 2 - timeout")
                 completions = openai.ChatCompletion.create(
 #                     model="gpt-4",
                     model="gpt-3.5-turbo",
@@ -155,7 +155,7 @@ if file is not None and st.button("번역 시작"):
                 )
                 st.write("used token :"+str(completions.usage['total_tokens']))
                 answer = completions.choices[0]['message']['content']
-    #             print(answer)
+                st.write(answer)
                 answer_dict = literal_eval(answer)
                 # print(answer_dict)
                 print("try : 2 - Finish")
@@ -171,7 +171,7 @@ if file is not None and st.button("번역 시작"):
                 )
                 st.write("used token :"+str(completions.usage['total_tokens']))
                 answer = completions.choices[0]['message']['content']
-                print(answer)
+                st.write(answer)
                 answer_dict = literal_eval(answer)
                 # print(answer_dict)
                 st.write("try : 2 - Finish")
@@ -186,7 +186,7 @@ if file is not None and st.button("번역 시작"):
         row_answer = int(key_answer_list[1])
         col_answer = int(key_answer_list[2])
         wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
-        st.write(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
+#         st.write(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
     st.write("번역완료")
     #### output 생성 ####
     
