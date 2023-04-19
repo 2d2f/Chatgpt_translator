@@ -140,11 +140,11 @@ st.header('File Translator')
 st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 
 col1, col2 = st.columns(2)
+
+org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+
 with col1:
-    org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-    tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-
-
 
     file = st.file_uploader(
         "파일을 선택하세요(xlsx, xlsm만 가능)",
