@@ -2,3 +2,4 @@ openai
 openpyxl
 konlpy
 pybase64
+pandas
