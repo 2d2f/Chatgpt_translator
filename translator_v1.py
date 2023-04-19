@@ -171,7 +171,8 @@ with col1:
             "파일을 선택하세요(xlsx만 가능)",
             type=['xlsx']
         )
-        df = pd.read_excel(file_DB,engine="openpyxl")
+        if file_DB is not None:
+            df = pd.read_excel(file_DB,engine="openpyxl")
     elif DB_type == "직접입력":
         st.write(f"(*)번역 지정 단어 입력")
         df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
