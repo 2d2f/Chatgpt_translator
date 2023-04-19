@@ -189,7 +189,7 @@ with col1:
         st.write(f' - 번역 후 단어 : {df_count_aft}개')
     else:
         df = pd.DataFrame(columns = ['번역전','번역후'])
-with col1:
+with col2:
     file = st.file_uploader(
         "파일을 선택하세요(xlsx, xlsm만 가능)",
         type=['xlsx', 'xlsm']
