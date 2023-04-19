@@ -176,6 +176,8 @@ with col1:
         df_count_aft = 0
         if file_DB is not None:
             df = pd.read_excel(file_DB,engine="openpyxl")
+        else:
+            df = pd.DataFrame(columns = ['번역전','번역후'])
 
     elif DB_type == "직접입력":
         st.write(f"(*)번역 지정 단어 입력")
