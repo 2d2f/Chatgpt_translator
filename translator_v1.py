@@ -163,7 +163,7 @@ df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 with col1:
     DB_type = st.radio(
         "번역 지정 단어 입력 방법 선택을 선택하세요",
-        ("엑셀파일","직접입력")
+        ("엑셀파일","직접입력"), horizontal=True
     )
 
     if DB_type == "엑셀파일":
