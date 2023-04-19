@@ -130,6 +130,8 @@ def is_not_org_sentence(text,org_lang):
 
 ############### main ################
 
+
+# openai.api_key = "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"
 openai.api_key = st.secrets["OPENAI_KEY"]
 
 
@@ -157,7 +159,7 @@ file = st.file_uploader(
 
 df_empty = pd.DataFrame(columns = ['번역 전','번역 후'])
 
-st.write(f"번역을 지정할 단어와 해당 번역을 입력하세요.")
+st.write(f"(*)번역 지정 단어 입력")
 df = st.experimental_data_editor(df_empty, width = 600,num_rows="dynamic")
 df_count = df.shape[0]
 df_count_bef = df["번역 전"].count()
