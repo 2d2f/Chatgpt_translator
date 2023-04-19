@@ -158,16 +158,13 @@ file = st.file_uploader(
 )
 
 # df_empty = pd.DataFrame(columns = ['번역 전','번역 후'])
-df = pd.DataFrame(
-    [
-       {"command": "st.selectbox", "rating": 4, "is_widget": True},
-       {"command": "st.balloons", "rating": 5, "is_widget": False},
-       {"command": "st.time_input", "rating": 3, "is_widget": True},
-   ]
-)
-edited_df = st.experimental_data_editor(df, num_rows="dynamic")
-# df_count = df.shape[0]
-# st.write(f"입력된 단어는 총 {df_count}개 입니다.")
+
+df_empty = pd.DataFrame([
+    {"번역 전":"한국채택국제회계기준서","번역 후":"KIFRS"},
+])
+df = st.experimental_data_editor(df_empty, num_rows="dynamic")
+df_count = df.shape[0]
+st.write(f"입력된 단어는 총 {df_count}개 입니다.")
 
 if file is not None and st.button("번역 시작"):
     st.write(file.name)
