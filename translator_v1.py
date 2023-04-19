@@ -165,7 +165,7 @@ df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 df = pd.DataFrame()
 with col1:
     DB_type = st.radio(
-        "번역 지정 단어 입력 방법 선택을 선택하세요",
+        " (*) 번역 지정 단어 입력",
         ("엑셀파일","직접입력"), horizontal=True
     )
 
@@ -182,7 +182,6 @@ with col1:
             df = pd.DataFrame(columns = ['번역전','번역후'])
 
     elif DB_type == "직접입력":
-        st.write(f"(*)번역 지정 단어 입력")
         df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
         df_count = df.shape[0]
         df_count_bef = df["번역전"].count()
