@@ -205,12 +205,13 @@ if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시
         sliced_trans_DB = sliced_DB_dicts[trytime]
         st.write(f"Input : {trytime+1}/{tot_cnt}")
         st.write(f"Input 길이 : {len(str(sliced_dict))}")
+        st.write(sliced_trans_DB)
         st.write(str(sliced_dict))
         messages.append({"role": "system", "content": 'You are a translate program. Dictionary is one of the type of variables in python that contains keys and values. The beginning and end of a dictionary are represented by \'{\' and \'}\', respectively, and the key and value are connected by \':\'. Each key-value pair separated by \', \' with no other spaces or line break. Also, There are any space or line break between \"{\" and first key-value pair, \"}\" and last key-value pair respectively'})
         # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
         messages.append({"role": "system", "content": f'Translate all the {org_lang} words and sentences in the dictionary below target dictionary into {tobe_lang}. What you should translate are all the sentenses and words. Output type is also dictionary which has same keys with input dictionary.'})
         messages.append({"role": "system", "content": f'{str(sliced_dict)}'})
-        messages.append({"role": "system", "content": f'Refer to the following dictionary when translating -> {str(sliced_trans_DB)}.'})
+        messages.append({"role": "system", "content": f'Use the following dictionary when translating -> {str(sliced_trans_DB)}.'})
         # messages.append({"role": "system", "content": f'If there is \' or \" with in the middle of the translated sentence, replace then with \\\' , \\\".'})
         messages.append({"role": "system", "content": f'Output should be only an Dictionary without any comments.'})
 
