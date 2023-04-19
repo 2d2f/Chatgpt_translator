@@ -55,10 +55,10 @@ def make_dict(ws_list,org_lang):
 def make_trans_DB(string,df):
 
     trans_DB = {}
-    for word in df["번역 전"]:
+    for word in df["번역전"]:
         if word in string:
-            index = df.index[df["번역 전"]==word][0]
-            trans_DB[word] = df.loc[index,"번역 후"]
+            index = df.index[df["번역전"]==word][0]
+            trans_DB[word] = df.loc[index,"번역후"]
 
     return trans_DB
 
@@ -159,13 +159,13 @@ file = st.file_uploader(
 # excel_files = glob.glob(search_path)
 col1, col2 = st.columns(2)
 
-df_empty = pd.DataFrame(columns = ['번역 전','번역 후'])
+df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 with col1:
     st.write(f"(*)번역 지정 단어 입력")
     df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
     df_count = df.shape[0]
-    df_count_bef = df["번역 전"].count()
-    df_count_aft = df["번역 후"].count()
+    df_count_bef = df["번역전"].count()
+    df_count_aft = df["번역후"].count()
     st.write(f' - 번역 전 단어 : {df_count_bef}개')
     st.write(f' - 번역 후 단어 : {df_count_aft}개')
 
