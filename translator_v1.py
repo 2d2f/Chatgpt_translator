@@ -57,10 +57,10 @@ def make_dict(ws_list,org_lang):
 def make_trans_DB(string,df):
 
     trans_DB = {}
-    for word in df["국문"]:
+    for word in df["번역 전"]:
         if word in string:
-            index = df.index[df["국문"]==word][0]
-            trans_DB[word] = df.loc[index,"영문"]
+            index = df.index[df["번역 전"]==word][0]
+            trans_DB[word] = df.loc[index,"번역 후"]
 
     return trans_DB
 
@@ -181,7 +181,7 @@ if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시
 
 
     #################### dictionary 생성 ###################
-    trans_dict = make_dict(ws_list = ws_list)
+    trans_dict = make_dict(ws_list = ws_list,org_lang=org_lang)
     st.write("Excel data has been loaded.")
 
     ###################### text limit 설정(환경이나 상황 등에 맞춰 적절한 값으로 바꿔줘야함) ###################
@@ -194,11 +194,6 @@ if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시
 
     sliced_dicts, sliced_DB_dicts, tot_cnt = slice_dict(trans_dict,text_limit,df) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
     st.write("Input dictionaries have been created.")
-
-
-
-
-    # word_trans_pair = 
 
 
     answer_dicts = {}
