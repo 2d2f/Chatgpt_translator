@@ -160,6 +160,7 @@ file = st.file_uploader(
 col1, col2 = st.columns(2)
 
 df_empty = pd.DataFrame(columns = ['번역전','번역후'])
+df = pd.DataFrame()
 with col1:
     DB_type = st.radio(
         "번역 지정 단어 입력 방법 선택을 선택하세요",
