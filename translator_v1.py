@@ -151,17 +151,16 @@ st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 # folder_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\회계질의번역\번역대상"
 # search_path = os.path.join(folder_path,"*.xlsx")
 # excel_files = glob.glob(search_path)
+
+
+org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+file = st.file_uploader(
+    "파일을 선택하세요(xlsx, xlsm만 가능)",
+    type=['xlsx', 'xlsm']
+)
+
 col1, col2 = st.columns(2)
-
-with col1:
-
-    org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-    tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-    file = st.file_uploader(
-        "파일을 선택하세요(xlsx, xlsm만 가능)",
-        type=['xlsx', 'xlsm']
-    )
-
 df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 df = pd.DataFrame()
 with col1:
