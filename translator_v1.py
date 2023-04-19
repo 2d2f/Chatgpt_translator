@@ -296,7 +296,7 @@ if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시
     wb.save(output_file_name)
     output_file = output.getvalue()
     b64 = base64.b64encode(output_file)
-    download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download=\'{output_file_name}\'>Download Excel File</a>'
+    download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download={output_file_name}>Download Excel File</a>'
     st.write("파일 생성 완료")
     st.markdown(download_link, unsafe_allow_html=True)    
 
