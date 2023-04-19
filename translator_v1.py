@@ -145,10 +145,7 @@ org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Ch
 tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
 
 
-file = st.file_uploader(
-    "파일을 선택하세요(xlsx, xlsm만 가능)",
-    type=['xlsx', 'xlsm']
-)
+
 
 # file_DB = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\번역_dataset.xlsx"
 # df = pd.read_excel(file_DB,engine="openpyxl")
@@ -159,9 +156,15 @@ file = st.file_uploader(
 # excel_files = glob.glob(search_path)
 col1, col2 = st.columns(2)
 
+with col1:
+    file = st.file_uploader(
+        "파일을 선택하세요(xlsx, xlsm만 가능)",
+        type=['xlsx', 'xlsm']
+    )
+
 df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 df = pd.DataFrame()
-with col1:
+with col2:
     DB_type = st.radio(
         "번역 지정 단어 입력 방법 선택을 선택하세요",
         ("엑셀파일","직접입력"), horizontal=True
