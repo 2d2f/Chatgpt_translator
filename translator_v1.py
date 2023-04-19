@@ -289,14 +289,9 @@ if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시
     #         st.write(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
     st.write("번역완료")
     #### output 생성 ####
-    change_folder = file.replace("번역대상","번역완료")
     output = BytesIO()
     output_file_name = f"{'.'.join(file.split('.')[0:-1])}_{tobe_lang}.{file.split('.')[-1]}"
-    # output_file_name = f"{'.'.join(change_folder.split('.')[0:-1])}_output.{change_folder.split('.')[-1]}"
-    # output_file_name = file
     wb.save(output_file_name)
-    #     ws2 = wb[wsname_answer]
-    #     st.write(ws2.cell(1,2).value)
     output_file = output.getvalue()
     b64 = base64.b64encode(output_file)
     download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download={output_file_name}>Download Excel File</a>'
