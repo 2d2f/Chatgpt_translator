@@ -153,7 +153,7 @@ st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 # excel_files = glob.glob(search_path)
 
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([2,3])
 
 with col1:
     org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
