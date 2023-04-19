@@ -169,6 +169,7 @@ st.write(f'번역 후 단어 : {df_count_aft}개')
 
 
 if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
+    st.write(file)
     st.write(file.name)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
     # lang = "English"
