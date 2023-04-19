@@ -139,16 +139,16 @@ st.title('Assurance DA')
 st.header('File Translator')
 st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 
-col1, col2 = st.columns(2)
-with col1:
-    org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-    tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
 
 
-    file = st.file_uploader(
-        "파일을 선택하세요(xlsx, xlsm만 가능)",
-        type=['xlsx', 'xlsm']
-    )
+org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+
+
+file = st.file_uploader(
+    "파일을 선택하세요(xlsx, xlsm만 가능)",
+    type=['xlsx', 'xlsm']
+)
 
 # file_DB = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\번역_dataset.xlsx"
 # df = pd.read_excel(file_DB,engine="openpyxl")
@@ -157,10 +157,10 @@ with col1:
 # folder_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\회계질의번역\번역대상"
 # search_path = os.path.join(folder_path,"*.xlsx")
 # excel_files = glob.glob(search_path)
-
+col1, col2 = st.columns(2)
 
 df_empty = pd.DataFrame(columns = ['번역 전','번역 후'])
-with col2:
+with col1:
     st.write(f"(*)번역 지정 단어 입력")
     df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
     df_count = df.shape[0]
