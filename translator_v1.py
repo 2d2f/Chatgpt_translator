@@ -141,9 +141,6 @@ st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 
 
 
-org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-
 
 
 
@@ -157,6 +154,9 @@ tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "
 col1, col2 = st.columns(2)
 
 with col1:
+
+    org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+    tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
     file = st.file_uploader(
         "파일을 선택하세요(xlsx, xlsm만 가능)",
         type=['xlsx', 'xlsm']
