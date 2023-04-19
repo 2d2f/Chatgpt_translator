@@ -163,7 +163,7 @@ with col1:
 df_empty = pd.DataFrame(columns = ['번역 전','번역 후'])
 with col2:
     st.write(f"(*)번역 지정 단어 입력")
-    df = st.experimental_data_editor(df_empty, width = 600,num_rows="dynamic")
+    df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
     df_count = df.shape[0]
     df_count_bef = df["번역 전"].count()
     df_count_aft = df["번역 후"].count()
