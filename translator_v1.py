@@ -166,8 +166,8 @@ with col1:
     df_count = df.shape[0]
     df_count_bef = df["번역 전"].count()
     df_count_aft = df["번역 후"].count()
-    st.write(f'번역 전 단어 : {df_count_bef}개')
-    st.write(f'번역 후 단어 : {df_count_aft}개')
+    st.write(f' - 번역 전 단어 : {df_count_bef}개')
+    st.write(f' - 번역 후 단어 : {df_count_aft}개')
 
 
 if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
