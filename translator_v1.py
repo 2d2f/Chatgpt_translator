@@ -161,7 +161,7 @@ df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 df = pd.DataFrame()
 with col1:
     DB_type = st.radio(
-        " (*) 번역 지정 단어 입력",
+        "지정된 번역을 사용할 단어를 입력하세요",
         ("엑셀파일","직접입력"), horizontal=True
     )
 
