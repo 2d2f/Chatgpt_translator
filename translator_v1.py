@@ -161,17 +161,30 @@ col1, col2 = st.columns(2)
 
 df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 with col1:
-    st.write(f"(*)번역 지정 단어 입력")
-    df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
-    df_count = df.shape[0]
-    df_count_bef = df["번역전"].count()
-    df_count_aft = df["번역후"].count()
-    st.write(f' - 번역 전 단어 : {df_count_bef}개')
-    st.write(f' - 번역 후 단어 : {df_count_aft}개')
+    DB_type = st.radio(
+        "번역 지정 단어 입력 방법 선택을 선택하세요",
+        ("엑셀파일","직접입력")
+    )
 
+    if DB_type == "엑셀파일":
+        file_DB = st.file_uploader(
+            "파일을 선택하세요(xlsx만 가능)",
+            type=['xlsx']
+        )
+        df = pd.read_excel(file_DB,engine="openpyxl")
+    elif DB_type == "직접입력":
+        st.write(f"(*)번역 지정 단어 입력")
+        df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
+        df_count = df.shape[0]
+        df_count_bef = df["번역전"].count()
+        df_count_aft = df["번역후"].count()
+        st.write(f' - 번역 전 단어 : {df_count_bef}개')
+        st.write(f' - 번역 후 단어 : {df_count_aft}개')
+    else:
+        df = pd.DataFrame()
 
 if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
-    st.write(file)
+
     st.write(file.name)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
     # lang = "English"
