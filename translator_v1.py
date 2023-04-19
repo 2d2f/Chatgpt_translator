@@ -159,14 +159,16 @@ file = st.file_uploader(
 
 df_empty = pd.DataFrame(columns = ['번역 전','번역 후'])
 
-# df_empty = pd.DataFrame([
-#     {"번역 전":"한국채택국제회계기준서","번역 후":"KIFRS"},
-# ])
-df = st.experimental_data_editor(df_empty,width = 600, num_rows="dynamic")
+st.write(f"번역을 지정할 단어와 해당 번역을 입력하세요.")
+df = st.experimental_data_editor(df_empty, width = 600,num_rows="dynamic")
 df_count = df.shape[0]
 st.write(f"입력된 단어는 총 {df_count}개 입니다.")
+df_count_bef = df["번역 전"].count()
+df_count_aft = df["번역 후"].count()
+if df_count_bef != df_count_aft:
+    st.write(f'번역 전 단어 {df_count_bef}개, 번역 후 단어 {df_count_aft}로 개수가 다릅니다. 확인바랍니다.')
 
-if file is not None and st.button("번역 시작"):
+if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
     st.write(file.name)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
     # lang = "English"
