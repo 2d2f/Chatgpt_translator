@@ -290,7 +290,7 @@ if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시
     st.write("번역완료")
     #### output 생성 ####
     output = BytesIO()
-    output_file_name = f"{'.'.join(file.split('.')[0:-1])}_{tobe_lang}.{file.split('.')[-1]}"
+    output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_{tobe_lang}.{file.name.split('.')[-1]}"
     wb.save(output_file_name)
     output_file = output.getvalue()
     b64 = base64.b64encode(output_file)
