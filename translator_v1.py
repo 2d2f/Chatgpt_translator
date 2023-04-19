@@ -10,8 +10,6 @@ import time
 import re
 from io import BytesIO
 import base64
-import os
-import glob
 
 class limit_error(Exception):
     pass
@@ -40,7 +38,7 @@ def make_dict(ws_list,org_lang):
                 target = ws.cell(row, col).value
                 if target == None:
                     continue
-                if is_not_org_sentence(str(target),org_lang):  # 한글 문자 하나도 안 들어간 문장 제외(영어 선택 시에만 작동하도록 수정해야함)
+                if is_not_org_sentence(str(target),org_lang):
                     continue
 
                 # target =target.replace("\'","\\\'")
@@ -140,9 +138,18 @@ st.set_page_config(layout="wide")
 st.title('Assurance DA')
 st.header('File Translator')
 st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
-org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
 
+col1, col2 = st.columns(2)
+with col1:
+    org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+    tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+
+
+
+    file = st.file_uploader(
+        "파일을 선택하세요(xlsx, xlsm만 가능)",
+        type=['xlsx', 'xlsm']
+    )
 
 # file_DB = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\번역_dataset.xlsx"
 # df = pd.read_excel(file_DB,engine="openpyxl")
@@ -152,20 +159,16 @@ tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "
 # search_path = os.path.join(folder_path,"*.xlsx")
 # excel_files = glob.glob(search_path)
 
-file = st.file_uploader(
-    "파일을 선택하세요(xlsx, xlsm만 가능)",
-    type=['xlsx', 'xlsm']
-)
 
 df_empty = pd.DataFrame(columns = ['번역 전','번역 후'])
-
-st.write(f"(*)번역 지정 단어 입력")
-df = st.experimental_data_editor(df_empty, width = 600,num_rows="dynamic")
-df_count = df.shape[0]
-df_count_bef = df["번역 전"].count()
-df_count_aft = df["번역 후"].count()
-st.write(f'번역 전 단어 : {df_count_bef}개')
-st.write(f'번역 후 단어 : {df_count_aft}개')
+with col2:
+    st.write(f"(*)번역 지정 단어 입력")
+    df = st.experimental_data_editor(df_empty, width = 600,num_rows="dynamic")
+    df_count = df.shape[0]
+    df_count_bef = df["번역 전"].count()
+    df_count_aft = df["번역 후"].count()
+    st.write(f'번역 전 단어 : {df_count_bef}개')
+    st.write(f'번역 후 단어 : {df_count_aft}개')
 
 
 if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
