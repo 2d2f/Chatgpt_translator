@@ -196,83 +196,69 @@ with col2:
     )
 
 
-if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
+    if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
 
-    st.write(file.name)
-    # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
-    # lang = "English"
-    # st.write(lang)
-    #################### 엑셀 불러온 후 모든 글자 긁어오기 #####################
-    wb = import_excel(file_path=file)
-    st.write("The Excel file has been uploaded.")
-    ws_list = wb.sheetnames
-
-
-    #################### dictionary 생성 ###################
-    trans_dict = make_dict(ws_list = ws_list,org_lang=org_lang)
-    st.write("Excel data has been loaded.")
-
-    ###################### text limit 설정(환경이나 상황 등에 맞춰 적절한 값으로 바꿔줘야함) ###################
-    if org_lang == "Korean" and tobe_lang == "English":
-        text_limit = 2050
-    elif org_lang == "English" and tobe_lang == "Korean":
-        text_limit = 2050
-    else:
-        text_limit = 1300
-
-    sliced_dicts, sliced_DB_dicts, tot_cnt = slice_dict(trans_dict,text_limit,df) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
-    st.write("Input dictionaries have been created.")
+        st.write(file.name)
+        # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
+        # lang = "English"
+        # st.write(lang)
+        #################### 엑셀 불러온 후 모든 글자 긁어오기 #####################
+        wb = import_excel(file_path=file)
+        st.write("The Excel file has been uploaded.")
+        ws_list = wb.sheetnames
 
 
-    answer_dicts = {}
-    st.write("번역시작")
-    for trytime, sliced_dict in enumerate(sliced_dicts):
-        messages = []
-        sliced_trans_DB = sliced_DB_dicts[trytime]
-        st.write(f"Input : {trytime+1}/{tot_cnt}")
-        st.write(f"Input 길이 : {len(str(sliced_dict))}")
-        st.write(sliced_trans_DB)
-        st.write(str(sliced_dict))
-        messages.append({"role": "system", "content": 'You are a translate program. Dictionary is one of the type of variables in python that contains keys and values. The beginning and end of a dictionary are represented by \'{\' and \'}\', respectively, and the key and value are connected by \':\'. Each key-value pair separated by \', \' with no other spaces or line break. Also, There are any space or line break between \"{\" and first key-value pair, \"}\" and last key-value pair respectively'})
-        # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
-        messages.append({"role": "system", "content": f'Translate all the {org_lang} words and sentences in the dictionary below target dictionary into {tobe_lang}. What you should translate are all the sentenses and words. Output type is also dictionary which has same keys with input dictionary.'})
-        messages.append({"role": "system", "content": f'{str(sliced_dict)}'})
-        messages.append({"role": "system", "content": f'Use the following dictionary when translating -> {str(sliced_trans_DB)}.'})
-        # messages.append({"role": "system", "content": f'If there is \' or \" with in the middle of the translated sentence, replace then with \\\' , \\\".'})
-        messages.append({"role": "system", "content": f'Output should be only an Dictionary without any comments.'})
+        #################### dictionary 생성 ###################
+        trans_dict = make_dict(ws_list = ws_list,org_lang=org_lang)
+        st.write("Excel data has been loaded.")
+
+        ###################### text limit 설정(환경이나 상황 등에 맞춰 적절한 값으로 바꿔줘야함) ###################
+        if org_lang == "Korean" and tobe_lang == "English":
+            text_limit = 2050
+        elif org_lang == "English" and tobe_lang == "Korean":
+            text_limit = 2050
+        else:
+            text_limit = 1300
+
+        sliced_dicts, sliced_DB_dicts, tot_cnt = slice_dict(trans_dict,text_limit,df) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
+        st.write("Input dictionaries have been created.")
 
 
-        try:
+        answer_dicts = {}
+        st.write("번역시작")
+        for trytime, sliced_dict in enumerate(sliced_dicts):
+            messages = []
+            sliced_trans_DB = sliced_DB_dicts[trytime]
+            st.write(f"Input : {trytime+1}/{tot_cnt}")
+            st.write(f"Input 길이 : {len(str(sliced_dict))}")
+            st.write(sliced_trans_DB)
+            st.write(str(sliced_dict))
+            messages.append({"role": "system", "content": 'You are a translate program. Dictionary is one of the type of variables in python that contains keys and values. The beginning and end of a dictionary are represented by \'{\' and \'}\', respectively, and the key and value are connected by \':\'. Each key-value pair separated by \', \' with no other spaces or line break. Also, There are any space or line break between \"{\" and first key-value pair, \"}\" and last key-value pair respectively'})
+            # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
+            messages.append({"role": "system", "content": f'Translate all the {org_lang} words and sentences in the dictionary below target dictionary into {tobe_lang}. What you should translate are all the sentenses and words. Output type is also dictionary which has same keys with input dictionary.'})
+            messages.append({"role": "system", "content": f'{str(sliced_dict)}'})
+            messages.append({"role": "system", "content": f'Use the following dictionary when translating -> {str(sliced_trans_DB)}.'})
+            # messages.append({"role": "system", "content": f'If there is \' or \" with in the middle of the translated sentence, replace then with \\\' , \\\".'})
+            messages.append({"role": "system", "content": f'Output should be only an Dictionary without any comments.'})
+
 
             try:
 
-                st.write("try : 1")
-
-                answer_dict = do_translate(messages=messages)
-
-                st.write("try : 1 - finish")
-
-                answer_dicts.update(answer_dict)
-
-            except requests.exceptions.Timeout:
-
-                time.sleep(2)
-
-                st.write("try : 2 - timeout")
-
-                answer_dict = do_translate(messages=messages)
-
-                st.write("try : 2 - Finish")
-
-                answer_dicts.update(answer_dict)
-
-            except SyntaxError:
-
                 try:
+
+                    st.write("try : 1")
+
+                    answer_dict = do_translate(messages=messages)
+
+                    st.write("try : 1 - finish")
+
+                    answer_dicts.update(answer_dict)
+
+                except requests.exceptions.Timeout:
 
                     time.sleep(2)
 
-                    st.write("try : 2 - syntax")
+                    st.write("try : 2 - timeout")
 
                     answer_dict = do_translate(messages=messages)
 
@@ -282,55 +268,69 @@ if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시
 
                 except SyntaxError:
 
-                    time.sleep(2)
+                    try:
 
-                    st.write("try : 3 - syntax")
+                        time.sleep(2)
 
-                    answer_dict = do_translate(messages=messages)
+                        st.write("try : 2 - syntax")
 
-                    st.write("try : 3 - Finish")
+                        answer_dict = do_translate(messages=messages)
 
-                    answer_dicts.update(answer_dict)
+                        st.write("try : 2 - Finish")
+
+                        answer_dicts.update(answer_dict)
+
+                    except SyntaxError:
+
+                        time.sleep(2)
+
+                        st.write("try : 3 - syntax")
+
+                        answer_dict = do_translate(messages=messages)
+
+                        st.write("try : 3 - Finish")
+
+                        answer_dicts.update(answer_dict)
+
+                    except limit_error:
+
+                        st.write("해당 셀에 너무 긴 문장이 들어 있어 번역에 실패하였습니다. 확인부탁드립니다.")
 
                 except limit_error:
-
+                    
                     st.write("해당 셀에 너무 긴 문장이 들어 있어 번역에 실패하였습니다. 확인부탁드립니다.")
 
             except limit_error:
-                
+
                 st.write("해당 셀에 너무 긴 문장이 들어 있어 번역에 실패하였습니다. 확인부탁드립니다.")
 
-        except limit_error:
+            except :
 
-            st.write("해당 셀에 너무 긴 문장이 들어 있어 번역에 실패하였습니다. 확인부탁드립니다.")
+                st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
 
-        except :
+        for key_answer in answer_dicts:
+            val_answer = answer_dicts[key_answer]
+            key_answer_list = key_answer.split("-")
+            wsname_answer = ws_list[int(key_answer_list[0])]
+            row_answer = int(key_answer_list[1])
+            col_answer = int(key_answer_list[2])
+            wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
+        #         st.write(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
+        st.write("번역완료")
+        #### output 생성 ####
+        output = BytesIO()
+        output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_{tobe_lang}.{file.name.split('.')[-1]}"
+        wb.save(output)
+        output_file = output.getvalue()
+        b64 = base64.b64encode(output_file)
+        download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download=\'{output_file_name}\'>Download Excel File</a>'
+        st.write("파일 생성 완료")
+        st.markdown(download_link, unsafe_allow_html=True)    
 
-            st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
-
-    for key_answer in answer_dicts:
-        val_answer = answer_dicts[key_answer]
-        key_answer_list = key_answer.split("-")
-        wsname_answer = ws_list[int(key_answer_list[0])]
-        row_answer = int(key_answer_list[1])
-        col_answer = int(key_answer_list[2])
-        wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
-    #         st.write(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
-    st.write("번역완료")
-    #### output 생성 ####
-    output = BytesIO()
-    output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_{tobe_lang}.{file.name.split('.')[-1]}"
-    wb.save(output)
-    output_file = output.getvalue()
-    b64 = base64.b64encode(output_file)
-    download_link = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64.decode()}" download=\'{output_file_name}\'>Download Excel File</a>'
-    st.write("파일 생성 완료")
-    st.markdown(download_link, unsafe_allow_html=True)    
-
-    time.sleep(100)
-        
-    # output_path = file_path[:-5]+"_output."+file_path[-4:]
-    #     output_file_name = f"{file.name.split('.')[0]}_output.xlsx"
-    #     wb.save(output_file)
-    #     st.success(f"Modified data saved to {output_file}.")
-    #     wb.close()
+        time.sleep(100)
+            
+        # output_path = file_path[:-5]+"_output."+file_path[-4:]
+        #     output_file_name = f"{file.name.split('.')[0]}_output.xlsx"
+        #     wb.save(output_file)
+        #     st.success(f"Modified data saved to {output_file}.")
+        #     wb.close()
