@@ -130,8 +130,6 @@ def is_not_org_sentence(text,org_lang):
 
 ############### main ################
 
-
-# openai.api_key = "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"
 openai.api_key = st.secrets["OPENAI_KEY"]
 
 
