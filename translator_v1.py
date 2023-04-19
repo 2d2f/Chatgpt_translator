@@ -171,8 +171,11 @@ with col1:
             "파일을 선택하세요(xlsx만 가능)",
             type=['xlsx']
         )
+        df_count_bef = 0
+        df_count_aft = 0
         if file_DB is not None:
             df = pd.read_excel(file_DB,engine="openpyxl")
+
     elif DB_type == "직접입력":
         st.write(f"(*)번역 지정 단어 입력")
         df = st.experimental_data_editor(df_empty, use_container_width = True,num_rows="dynamic")
@@ -184,7 +187,7 @@ with col1:
     else:
         df = pd.DataFrame()
 
-if (file is not None and (file_DB is not None or df_count_bef == df_count_aft)) and st.button("번역 시작"):
+if (file is not None and df_count_bef == df_count_aft) and st.button("번역 시작"):
 
     st.write(file.name)
     # file_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\sample_eng_2.xlsm"
