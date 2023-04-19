@@ -153,13 +153,15 @@ st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 # excel_files = glob.glob(search_path)
 
 
-org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
-
 col1, col2 = st.columns(2)
+
+with col1:
+    org_lang = st.radio("Input 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+    tobe_lang = st.radio("Output 언어를 선택하세요", ["Korean", "English", "Chinese", "Japanese"], horizontal=True)
+
 df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 df = pd.DataFrame()
-with col1:
+with col2:
     DB_type = st.radio(
         "지정된 번역을 사용할 단어를 입력하세요",
         ("엑셀파일","직접입력"), horizontal=True
