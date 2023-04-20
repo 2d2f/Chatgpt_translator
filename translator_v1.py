@@ -170,7 +170,7 @@ with col1:
 
     if DB_type == "엑셀파일":
         file_DB = st.file_uploader(
-            "파일을 선택하세요(xlsx만 가능)",
+            "번역을 지정할 파일을 선택하세요(xlsx만 가능)",
             type=['xlsx']
         )
         df_count_bef = 0
@@ -191,7 +191,7 @@ with col1:
         df = pd.DataFrame(columns = ['번역전','번역후'])
 with col2:
     file = st.file_uploader(
-        "파일을 선택하세요(xlsx, xlsm만 가능)",
+        "번역 대상 파일을 선택하세요(xlsx, xlsm만 가능)",
         type=['xlsx', 'xlsm']
     )
 
