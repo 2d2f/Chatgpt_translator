@@ -98,7 +98,6 @@ def slice_dict(dict, max_length,df):
 
 
 def do_translate(messages):
-    st.write("do_translate") ########
     completions = openai.ChatCompletion.create(
 #       model="gpt-4",
         model="gpt-3.5-turbo",
@@ -108,11 +107,8 @@ def do_translate(messages):
     st.write("used token :"+str(completions.usage['total_tokens']))
     if completions.usage['total_tokens']>4096:
         raise limit_error
-    answer = completions.choices[0]['message']['content']
-    st.write(answer)
-    answer_dict = literal_eval(answer)
-    st.write("해당 번역 입력.")
-    return answer_dict
+
+    return completions
 
 def is_not_org_sentence(text,org_lang):
     # Only contains english alphabet and several marks include 'space'.
