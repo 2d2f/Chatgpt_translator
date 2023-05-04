@@ -14,6 +14,7 @@ class limit_error(Exception):
     pass
 
 def import_excel(file_path):
+    st.write("import_excel") ########
     wb = Workbook()
     if file_path.name[-4:] == "xlsm":
         wb = load_workbook(file_path,data_only=True,keep_vba=True)
@@ -26,6 +27,7 @@ def import_excel(file_path):
     return wb
 
 def make_dict(ws_list,org_lang):
+    st.write("make_dict") ########
     trans_dict = {}
     for order, wsname in enumerate(ws_list):
         ws = wb[wsname]
@@ -61,7 +63,7 @@ def make_trans_DB(string,df):
     return trans_DB
 
 def slice_dict(dict, max_length,df):
-
+    st.write("slice_dict") ########
     result = []
     result_DB = []
     current_dict = {}
@@ -96,6 +98,7 @@ def slice_dict(dict, max_length,df):
 
 
 def do_translate(messages):
+    st.write("do_translate") ########
     completions = openai.ChatCompletion.create(
 #       model="gpt-4",
         model="gpt-3.5-turbo",
@@ -153,6 +156,7 @@ with col1:
 
 df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 df = pd.DataFrame()
+st.write("df_setting") ########
 with col1:
     DB_type = st.radio(
         "지정된 번역을 사용할 단어를 입력하세요",
