@@ -14,7 +14,7 @@ class limit_error(Exception):
     pass
 
 def import_excel(file_path):
-    st.write("import_excel") ########
+
     wb = Workbook()
     if file_path.name[-4:] == "xlsm":
         wb = load_workbook(file_path,data_only=True,keep_vba=True)
@@ -27,7 +27,7 @@ def import_excel(file_path):
     return wb
 
 def make_dict(ws_list,org_lang):
-    st.write("make_dict") ########
+
     trans_dict = {}
     for order, wsname in enumerate(ws_list):
         ws = wb[wsname]
@@ -63,7 +63,7 @@ def make_trans_DB(string,df):
     return trans_DB
 
 def slice_dict(dict, max_length,df):
-    st.write("slice_dict") ########
+
     result = []
     result_DB = []
     current_dict = {}
@@ -152,7 +152,7 @@ with col1:
 
 df_empty = pd.DataFrame(columns = ['번역전','번역후'])
 df = pd.DataFrame()
-st.write("df_setting") ########
+
 with col1:
     DB_type = st.radio(
         "지정된 번역을 사용할 단어를 입력하세요",
@@ -234,60 +234,35 @@ with col2:
             messages.append({"role": "system", "content": f'Output should be only an Dictionary without any comments.'})
 
 
-#             try:
-
             try:
-
-                st.write("try : 1")
-
-                completions = do_translate(messages=messages)
-
-                answer = completions.choices[0]['message']['content']
-
-
-                st.write(answer)
-
-                answer = answer.replace('\'s','\\\'s')
-
-                answer = answer.replace('\\\\\'s','\\\'s')
-
-                answer_dict = literal_eval(answer)
-
-                answer_dicts.update(answer_dict)
-
-
-                st.write("try : 1 - finish")
-
-            except requests.exceptions.Timeout:
-
-                time.sleep(2)
-
-                st.write("try : 2 - timeout")
-
-                completions = do_translate(messages=messages)
-
-                answer = completions.choices[0]['message']['content']
-
-
-                st.write(answer)
-
-                answer = answer.replace('\'s','\\\'s')
-
-                answer = answer.replace('\\\\\'s','\\\'s')
-
-                answer_dict = literal_eval(answer)
-
-                answer_dicts.update(answer_dict)
-
-                st.write("try : 2 - Finish")
-
-            except SyntaxError:
 
                 try:
 
+                    st.write("try : 1")
+
+                    completions = do_translate(messages=messages)
+
+                    answer = completions.choices[0]['message']['content']
+
+
+                    st.write(answer)
+
+                    answer = answer.replace('\'s','\\\'s')
+
+                    answer = answer.replace('\\\\\'s','\\\'s')
+
+                    answer_dict = literal_eval(answer)
+
+                    answer_dicts.update(answer_dict)
+
+
+                    st.write("try : 1 - finish")
+
+                except requests.exceptions.Timeout:
+
                     time.sleep(2)
 
-                    st.write("try : 2 - syntax")
+                    st.write("try : 2 - timeout")
 
                     completions = do_translate(messages=messages)
 
@@ -306,29 +281,88 @@ with col2:
 
                     st.write("try : 2 - Finish")
 
-
                 except SyntaxError:
 
-                    time.sleep(2)
+                    try:
 
-                    st.write("try : 3 - syntax")
+                        time.sleep(2)
 
-                    completions = do_translate(messages=messages)
+                        st.write("try : 2 - syntax")
 
-                    answer = completions.choices[0]['message']['content']
+                        completions = do_translate(messages=messages)
+
+                        answer = completions.choices[0]['message']['content']
 
 
-                    st.write(answer)
+                        st.write(answer)
 
-                    answer = answer.replace('\'s','\\\'s')
+                        answer = answer.replace('\'s','\\\'s')
 
-                    answer = answer.replace('\\\\\'s','\\\'s')
+                        answer = answer.replace('\\\\\'s','\\\'s')
 
-                    answer_dict = literal_eval(answer)
+                        answer_dict = literal_eval(answer)
 
-                    answer_dicts.update(answer_dict)
+                        answer_dicts.update(answer_dict)
 
-                    st.write("try : 3 - Finish")
+                        st.write("try : 2 - Finish")
+
+
+                    except SyntaxError:
+
+                        time.sleep(2)
+
+                        st.write("try : 3 - syntax")
+
+                        completions = do_translate(messages=messages)
+
+                        answer = completions.choices[0]['message']['content']
+
+
+                        st.write(answer)
+
+                        answer = answer.replace('\'s','\\\'s')
+
+                        answer = answer.replace('\\\\\'s','\\\'s')
+
+                        answer_dict = literal_eval(answer)
+
+                        answer_dicts.update(answer_dict)
+
+                        st.write("try : 3 - Finish")
+
+
+                    except limit_error:
+
+                        st.write("해당 셀에 너무 긴 문장이 들어 있습니다.")
+                        sent_vals = list(sliced_dict.values())
+
+                        sent_idxs = list(sliced_dict.keys())
+
+                        for sent_idx, sent_val in enumerate(sent_vals):
+                            ans_sent = []
+                            answer_dict = {}
+                            sent_splits = sent_val.split(". ")
+
+                            for sent_split in sent_splits:
+                                messages = []
+                                messages.append({"role": "system", "content": 'You are a translate program.'})
+                                messages.append({"role": "system", "content": f'Please translate this sentencs. \'{sent_split}\''})
+                                completions = do_translate(messages=messages)
+                                answer = completions.choices[0]['message']['content']
+
+                                answer = answer.replace('\'s','\\\'s')
+                                answer = answer.replace('\\\\\'s','\\\'s')
+                                ans_sent.append(answer)
+
+                            ans_sent_tot = ".".join(ans_sent)
+
+                            st.write(ans_sent_tot)
+
+                            answer_dict[sent_idx] = ans_sent_tot
+
+                            answer_dicts.update(answer_dict)
+
+
 
 
                 except limit_error:
@@ -362,43 +396,9 @@ with col2:
 
                         answer_dicts.update(answer_dict)
 
+            except :
 
-
-
-            except limit_error:
-
-                st.write("해당 셀에 너무 긴 문장이 들어 있습니다.")
-                sent_vals = list(sliced_dict.values())
-
-                sent_idxs = list(sliced_dict.keys())
-
-                for sent_idx, sent_val in enumerate(sent_vals):
-                    ans_sent = []
-                    answer_dict = {}
-                    sent_splits = sent_val.split(". ")
-
-                    for sent_split in sent_splits:
-                        messages = []
-                        messages.append({"role": "system", "content": 'You are a translate program.'})
-                        messages.append({"role": "system", "content": f'Please translate this sentencs. \'{sent_split}\''})
-                        completions = do_translate(messages=messages)
-                        answer = completions.choices[0]['message']['content']
-
-                        answer = answer.replace('\'s','\\\'s')
-                        answer = answer.replace('\\\\\'s','\\\'s')
-                        ans_sent.append(answer)
-
-                    ans_sent_tot = ".".join(ans_sent)
-
-                    st.write(ans_sent_tot)
-
-                    answer_dict[sent_idx] = ans_sent_tot
-
-                    answer_dicts.update(answer_dict)
-
-#             except :
-
-#                 st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
+                st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
 
         for key_answer in answer_dicts:
             try:
