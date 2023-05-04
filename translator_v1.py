@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 from ast import literal_eval
-from konlpy.tag import Okt
 import sys
 import requests
 import time
@@ -41,10 +40,6 @@ def make_dict(ws_list,org_lang):
                 if is_not_org_sentence(str(target),org_lang):
                     continue
 
-                # target =target.replace("\'","\\\'")
-                # target =target.replace("\"","\\\"")
-                # target =target.replace("\\\\\'","\\\'")
-                # target =target.replace("\\\\\"","\\\"")
                 key = str(order)+"-"+str(row)+"-"+str(col)
                 val = target
 
@@ -55,10 +50,13 @@ def make_dict(ws_list,org_lang):
 def make_trans_DB(string,df):
 
     trans_DB = {}
-    for word in df["번역전"]:
-        if word in string:
-            index = df.index[df["번역전"]==word][0]
-            trans_DB[word] = df.loc[index,"번역후"]
+    if df.empty:
+        pass
+    else:
+        for word in df["번역전"]:
+            if word in string:
+                index = df.index[df["번역전"]==word][0]
+                trans_DB[word] = df.loc[index,"번역후"]
 
     return trans_DB
 
@@ -70,10 +68,17 @@ def slice_dict(dict, max_length,df):
     current_length = 0
     current_trans_DB = {}
     tot_cnt = 1
+
     for key, value in dict.items():
         key_length = len(str(key))
         value_length = len(str(value))
         trans_DB_length = len(str(current_trans_DB))
+
+        if df.empty:
+            trans_DB_length = 0
+        else:
+            trans_DB_length = len(str(current_trans_DB))
+
         if current_length +key_length + value_length + trans_DB_length > max_length:
             result.append(current_dict)
             result_DB.append(current_trans_DB)
@@ -128,8 +133,6 @@ def is_not_org_sentence(text,org_lang):
 
 ############### main ################
 
-
-# openai.api_key = "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"
 openai.api_key = st.secrets["OPENAI_KEY"]
 
 
@@ -139,18 +142,6 @@ st.title('Assurance DA')
 st.header('File Translator')
 st.write('Developed by Assurance DA (beomsun.go@pwc.com)')
 
-
-
-
-
-
-# file_DB = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\번역_dataset.xlsx"
-# df = pd.read_excel(file_DB,engine="openpyxl")
-
-# folder_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\회계질의번역\번역대상"
-# folder_path = r"C:\Users\bgo006\Desktop\CorDA\project\chatgpt\translator\회계질의번역\번역대상"
-# search_path = os.path.join(folder_path,"*.xlsx")
-# excel_files = glob.glob(search_path)
 
 
 col1, col2 = st.columns([1,2])
@@ -170,7 +161,7 @@ with col1:
 
     if DB_type == "엑셀파일":
         file_DB = st.file_uploader(
-            "번역을 지정할 파일을 선택하세요(xlsx만 가능)",
+            "파일을 선택하세요(xlsx만 가능)",
             type=['xlsx']
         )
         df_count_bef = 0
@@ -191,7 +182,7 @@ with col1:
         df = pd.DataFrame(columns = ['번역전','번역후'])
 with col2:
     file = st.file_uploader(
-        "번역 대상 파일을 선택하세요(xlsx, xlsm만 가능)",
+        "파일을 선택하세요(xlsx, xlsm만 가능)",
         type=['xlsx', 'xlsm']
     )
 
@@ -218,7 +209,7 @@ with col2:
         elif org_lang == "English" and tobe_lang == "Korean":
             text_limit = 2050
         else:
-            text_limit = 1300
+            text_limit = 1500
 
         sliced_dicts, sliced_DB_dicts, tot_cnt = slice_dict(trans_dict,text_limit,df) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
         st.write("Input dictionaries have been created.")
@@ -237,7 +228,8 @@ with col2:
             # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
             messages.append({"role": "system", "content": f'Translate all the {org_lang} words and sentences in the dictionary below target dictionary into {tobe_lang}. What you should translate are all the sentenses and words. Output type is also dictionary which has same keys with input dictionary.'})
             messages.append({"role": "system", "content": f'{str(sliced_dict)}'})
-            messages.append({"role": "system", "content": f'Use the following dictionary when translating -> {str(sliced_trans_DB)}.'})
+            if not df.empty:
+                messages.append({"role": "system", "content": f'Use the following dictionary when translating -> {str(sliced_trans_DB)}.'})
             # messages.append({"role": "system", "content": f'If there is \' or \" with in the middle of the translated sentence, replace then with \\\' , \\\".'})
             messages.append({"role": "system", "content": f'Output should be only an Dictionary without any comments.'})
 
@@ -248,11 +240,23 @@ with col2:
 
                     st.write("try : 1")
 
-                    answer_dict = do_translate(messages=messages)
+                    completions = do_translate(messages=messages)
 
-                    st.write("try : 1 - finish")
+                    answer = completions.choices[0]['message']['content']
+
+
+                    st.write(answer)
+
+                    answer = answer.replace('\'s','\\\'s')
+
+                    answer = answer.replace('\\\\\'s','\\\'s')
+
+                    answer_dict = literal_eval(answer)
 
                     answer_dicts.update(answer_dict)
+
+
+                    st.write("try : 1 - finish")
 
                 except requests.exceptions.Timeout:
 
@@ -260,11 +264,22 @@ with col2:
 
                     st.write("try : 2 - timeout")
 
-                    answer_dict = do_translate(messages=messages)
+                    completions = do_translate(messages=messages)
 
-                    st.write("try : 2 - Finish")
+                    answer = completions.choices[0]['message']['content']
+
+
+                    st.write(answer)
+
+                    answer = answer.replace('\'s','\\\'s')
+                    
+                    answer = answer.replace('\\\\\'s','\\\'s')
+
+                    answer_dict = literal_eval(answer)
 
                     answer_dicts.update(answer_dict)
+
+                    st.write("try : 2 - Finish")
 
                 except SyntaxError:
 
@@ -274,11 +289,23 @@ with col2:
 
                         st.write("try : 2 - syntax")
 
-                        answer_dict = do_translate(messages=messages)
+                        completions = do_translate(messages=messages)
+
+                        answer = completions.choices[0]['message']['content']
+
+
+                        st.write(answer)
+
+                        answer = answer.replace('\'s','\\\'s')
+                        
+                        answer = answer.replace('\\\\\'s','\\\'s')
+
+                        answer_dict = literal_eval(answer)
+
+                        answer_dicts.update(answer_dict)
 
                         st.write("try : 2 - Finish")
 
-                        answer_dicts.update(answer_dict)
 
                     except SyntaxError:
 
@@ -286,37 +313,109 @@ with col2:
 
                         st.write("try : 3 - syntax")
 
-                        answer_dict = do_translate(messages=messages)
+                        completions = do_translate(messages=messages)
 
-                        st.write("try : 3 - Finish")
+                        answer = completions.choices[0]['message']['content']
+
+
+                        st.write(answer)
+
+                        answer = answer.replace('\'s','\\\'s')
+                        
+                        answer = answer.replace('\\\\\'s','\\\'s')
+
+                        answer_dict = literal_eval(answer)
 
                         answer_dicts.update(answer_dict)
 
+                        st.write("try : 3 - Finish")
+
+
                     except limit_error:
 
-                        st.write("해당 셀에 너무 긴 문장이 들어 있어 번역에 실패하였습니다. 확인부탁드립니다.")
+                        st.write("해당 셀에 너무 긴 문장이 들어 있습니다.")
+                        sent_vals = list(sliced_dict.values())
+
+                        sent_idxs = list(sliced_dict.keys())
+
+                        for sent_idx, sent_val in enumerate(sent_vals):
+                            ans_sent = []
+                            answer_dict = {}
+                            sent_splits = sent_val.split(". ")
+
+                            for sent_split in sent_splits:
+                                messages = []
+                                messages.append({"role": "system", "content": 'You are a translate program.'})
+                                messages.append({"role": "system", "content": f'Please translate this sentencs. \'{sent_split}\''})
+                                completions = do_translate(messages=messages)
+                                answer = completions.choices[0]['message']['content']
+
+                                answer = answer.replace('\'s','\\\'s')
+                                answer = answer.replace('\\\\\'s','\\\'s')
+                                ans_sent.append(answer)
+
+                            ans_sent_tot = ".".join(ans_sent)
+
+                            st.write(ans_sent_tot)
+
+                            answer_dict[sent_idx] = ans_sent_tot
+
+                            answer_dicts.update(answer_dict)
+
+
+        
 
                 except limit_error:
                     
-                    st.write("해당 셀에 너무 긴 문장이 들어 있어 번역에 실패하였습니다. 확인부탁드립니다.")
+                    st.write("해당 셀에 너무 긴 문장이 들어 있습니다.")
+                    sent_vals = list(sliced_dict.values())
 
-            except limit_error:
+                    sent_idxs = list(sliced_dict.keys())
 
-                st.write("해당 셀에 너무 긴 문장이 들어 있어 번역에 실패하였습니다. 확인부탁드립니다.")
+                    for sent_idx, sent_val in enumerate(sent_vals):
+                        ans_sent = []
+                        answer_dict = {}
+                        sent_splits = sent_val.split(". ")
+
+                        for sent_split in sent_splits:
+                            messages = []
+                            messages.append({"role": "system", "content": 'You are a translate program.'})
+                            messages.append({"role": "system", "content": f'Please translate this sentencs. \'{sent_split}\''})
+                            completions = do_translate(messages=messages)
+                            answer = completions.choices[0]['message']['content']
+
+                            answer = answer.replace('\'s','\\\'s')
+                            answer = answer.replace('\\\\\'s','\\\'s')
+                            ans_sent.append(answer)
+
+                        ans_sent_tot = ".".join(ans_sent)
+
+                        st.write(ans_sent_tot)
+
+                        answer_dict[sent_idx] = ans_sent_tot
+
+                        answer_dicts.update(answer_dict)
 
             except :
 
                 st.write("오류로 인해 해당부분이 번역되지 않았습니다.")
 
         for key_answer in answer_dicts:
-            val_answer = answer_dicts[key_answer]
-            key_answer_list = key_answer.split("-")
-            wsname_answer = ws_list[int(key_answer_list[0])]
-            row_answer = int(key_answer_list[1])
-            col_answer = int(key_answer_list[2])
-            wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
-        #         st.write(val_answer, wsname_answer, row_answer, col_answer, wb[wsname_answer].cell(row_answer,col_answer).value)
+            try:
+                val_answer = answer_dicts[key_answer]
+                key_answer_list = key_answer.split("-")
+                wsname_answer = ws_list[int(key_answer_list[0])]
+                row_answer = int(key_answer_list[1])
+                col_answer = int(key_answer_list[2])
+                wb[wsname_answer].cell(row_answer,col_answer).value = val_answer
+           
+            except:
+                continue
+
+
+
         st.write("번역완료")
+
         #### output 생성 ####
         output = BytesIO()
         output_file_name = f"{'.'.join(file.name.split('.')[0:-1])}_{tobe_lang}.{file.name.split('.')[-1]}"
@@ -328,9 +427,3 @@ with col2:
         st.markdown(download_link, unsafe_allow_html=True)    
 
         time.sleep(100)
-            
-        # output_path = file_path[:-5]+"_output."+file_path[-4:]
-        #     output_file_name = f"{file.name.split('.')[0]}_output.xlsx"
-        #     wb.save(output_file)
-        #     st.success(f"Modified data saved to {output_file}.")
-        #     wb.close()
