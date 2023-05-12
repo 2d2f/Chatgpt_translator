@@ -104,7 +104,7 @@ def do_translate(messages):
         messages=messages,
         timeout=60
     )
-    st.write("used token :"+str(completions.usage['total_tokens']))
+#     st.write("used token :"+str(completions.usage['total_tokens']))
     if completions.usage['total_tokens']>4096:
         raise limit_error
 
@@ -217,11 +217,13 @@ with col2:
 
         answer_dicts = {}
         st.write("번역시작")
+        text_info = st.empty()
         for trytime, sliced_dict in enumerate(sliced_dicts):
             messages = []
             sliced_trans_DB = sliced_DB_dicts[trytime]
-            st.write(f"Input : {trytime+1}/{tot_cnt}")
-            st.write(f"Input 길이 : {len(str(sliced_dict))}")
+            text_info.text_input(f"Input : {trytime+1}/{tot_cnt}")
+#             st.write(f"Input : {trytime+1}/{tot_cnt}")
+#             st.write(f"Input 길이 : {len(str(sliced_dict))}")
 #             st.write(sliced_trans_DB)
 #             st.write(str(sliced_dict))
             messages.append({"role": "system", "content": 'You are a translate program. Dictionary is one of the type of variables in python that contains keys and values. The beginning and end of a dictionary are represented by \'{\' and \'}\', respectively, and the key and value are connected by \':\'. Each key-value pair separated by \', \' with no other spaces or line break. Also, There are any space or line break between \"{\" and first key-value pair, \"}\" and last key-value pair respectively'})
