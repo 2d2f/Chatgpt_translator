@@ -222,7 +222,7 @@ with col2:
             sliced_trans_DB = sliced_DB_dicts[trytime]
             st.write(f"Input : {trytime+1}/{tot_cnt}")
             st.write(f"Input 길이 : {len(str(sliced_dict))}")
-            st.write(sliced_trans_DB)
+#             st.write(sliced_trans_DB)
             st.write(str(sliced_dict))
             messages.append({"role": "system", "content": 'You are a translate program. Dictionary is one of the type of variables in python that contains keys and values. The beginning and end of a dictionary are represented by \'{\' and \'}\', respectively, and the key and value are connected by \':\'. Each key-value pair separated by \', \' with no other spaces or line break. Also, There are any space or line break between \"{\" and first key-value pair, \"}\" and last key-value pair respectively'})
             # messages.append({"role": "system", "content": 'Please translate sentenses and words from English to Korean. What you should translate are values in below dictionary and output type is also dictionary which has same keys with input dictionary'})
@@ -245,7 +245,7 @@ with col2:
                     answer = completions.choices[0]['message']['content']
 
 
-                    st.write(answer)
+#                     st.write(answer)
 
                     answer = answer.replace('\'s','\\\'s')
 
@@ -269,7 +269,7 @@ with col2:
                     answer = completions.choices[0]['message']['content']
 
 
-                    st.write(answer)
+#                     st.write(answer)
 
                     answer = answer.replace('\'s','\\\'s')
 
@@ -294,7 +294,7 @@ with col2:
                         answer = completions.choices[0]['message']['content']
 
 
-                        st.write(answer)
+#                         st.write(answer)
 
                         answer = answer.replace('\'s','\\\'s')
 
@@ -318,7 +318,7 @@ with col2:
                         answer = completions.choices[0]['message']['content']
 
 
-                        st.write(answer)
+#                         st.write(answer)
 
                         answer = answer.replace('\'s','\\\'s')
 
@@ -356,7 +356,7 @@ with col2:
 
                             ans_sent_tot = ".".join(ans_sent)
 
-                            st.write(ans_sent_tot)
+#                             st.write(ans_sent_tot)
 
                             answer_dict[sent_idx] = ans_sent_tot
 
@@ -390,7 +390,7 @@ with col2:
 
                         ans_sent_tot = ".".join(ans_sent)
 
-                        st.write(ans_sent_tot)
+#                         st.write(ans_sent_tot)
 
                         answer_dict[sent_idx] = ans_sent_tot
 
