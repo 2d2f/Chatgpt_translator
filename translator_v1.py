@@ -217,12 +217,10 @@ with col2:
 
         answer_dicts = {}
         st.write("번역시작")
-        text_info = st.empty()
         for trytime, sliced_dict in enumerate(sliced_dicts):
             messages = []
             sliced_trans_DB = sliced_DB_dicts[trytime]
-            text_info.text_input(f"Input : {trytime+1}/{tot_cnt}")
-#             st.write(f"Input : {trytime+1}/{tot_cnt}")
+            st.write(f"Input : {trytime+1}/{tot_cnt}")
 #             st.write(f"Input 길이 : {len(str(sliced_dict))}")
 #             st.write(sliced_trans_DB)
 #             st.write(str(sliced_dict))
