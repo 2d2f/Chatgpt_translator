@@ -238,7 +238,7 @@ with col2:
 
                 try:
 
-                    st.write("try : 1")
+#                     st.write("try : 1")
 
                     completions = do_translate(messages=messages)
 
@@ -256,13 +256,13 @@ with col2:
                     answer_dicts.update(answer_dict)
 
 
-                    st.write("try : 1 - finish")
+#                     st.write("try : 1 - finish")
 
                 except requests.exceptions.Timeout:
 
                     time.sleep(2)
 
-                    st.write("try : 2 - timeout")
+#                     st.write("try : 2 - timeout")
 
                     completions = do_translate(messages=messages)
 
@@ -279,7 +279,7 @@ with col2:
 
                     answer_dicts.update(answer_dict)
 
-                    st.write("try : 2 - Finish")
+#                     st.write("try : 2 - Finish")
 
                 except SyntaxError:
 
@@ -287,7 +287,7 @@ with col2:
 
                         time.sleep(2)
 
-                        st.write("try : 2 - syntax")
+#                         st.write("try : 2 - syntax")
 
                         completions = do_translate(messages=messages)
 
@@ -304,14 +304,14 @@ with col2:
 
                         answer_dicts.update(answer_dict)
 
-                        st.write("try : 2 - Finish")
+#                         st.write("try : 2 - Finish")
 
 
                     except SyntaxError:
 
                         time.sleep(2)
 
-                        st.write("try : 3 - syntax")
+#                         st.write("try : 3 - syntax")
 
                         completions = do_translate(messages=messages)
 
@@ -328,7 +328,7 @@ with col2:
 
                         answer_dicts.update(answer_dict)
 
-                        st.write("try : 3 - Finish")
+#                         st.write("try : 3 - Finish")
 
 
                     except limit_error:
