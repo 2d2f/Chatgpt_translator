@@ -99,8 +99,8 @@ def slice_dict(dict, max_length,df):
 
 def do_translate(messages):
     completions = openai.ChatCompletion.create(
-#       model="gpt-4",
-        model="gpt-3.5-turbo",
+      model="gpt-4",
+        # model="gpt-3.5-turbo",
         messages=messages,
         timeout=60
     )
