@@ -99,13 +99,13 @@ def slice_dict(dict, max_length,df):
 
 def do_translate(messages):
     completions = openai.ChatCompletion.create(
-      model="gpt-4",
-        # model="gpt-3.5-turbo",
+      # model="gpt-4",
+        model="gpt-3.5-turbo-16k",
         messages=messages,
         timeout=60
     )
 #     st.write("used token :"+str(completions.usage['total_tokens']))
-    if completions.usage['total_tokens']>4096:
+    if completions.usage['total_tokens']>16384:
         raise limit_error
 
     return completions
@@ -205,11 +205,11 @@ with col2:
 
         ###################### text limit 설정(환경이나 상황 등에 맞춰 적절한 값으로 바꿔줘야함) ###################
         if org_lang == "Korean" and tobe_lang == "English":
-            text_limit = 2050
+            text_limit = 4100
         elif org_lang == "English" and tobe_lang == "Korean":
-            text_limit = 2050
+            text_limit = 4100
         else:
-            text_limit = 1500
+            text_limit = 3000
 
         sliced_dicts, sliced_DB_dicts, tot_cnt = slice_dict(trans_dict,text_limit,df) # 한자는 1,300자로 하는게 안전한듯 # 영어는 2500자?
         st.write("Input dictionaries have been created.")
